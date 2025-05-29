@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -17,18 +17,41 @@ import { Header } from '@/components/layout/header'
 import { CreateOrderForm } from '@/components/orders/create-order-form'
 import { useDeliveries } from '@/hooks/use-db'
 
+type DeliveryLocation = {
+  id: string
+  address: string
+  lat: number
+  lng: number
+}
+
 export default function Dashboard() {
   const [isOnline, setIsOnline] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { deliveries, loading, error } = useDeliveries()
+  const [deliveryLocations, setDeliveryLocations] = useState<DeliveryLocation[]>([])
+  const [hasMounted, setHasMounted] = useState(false)
 
+ useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
-  const deliveryLocations = deliveries.map(delivery => ({
-    id: delivery.id,
-    address: delivery.address,
-    lat: -23.550520 + Math.random() * 0.1,
-    lng: -46.633308 + Math.random() * 0.1
-  }))
+  useEffect(() => {
+    if (hasMounted) {
+      setDeliveryLocations(
+        deliveries.map(delivery => ({
+          id: delivery.id,
+          address: delivery.address,
+          lat: -23.550520 + Math.random() * 0.1,
+          lng: -46.633308 + Math.random() * 0.1
+        }))
+      )
+    }
+  }, [deliveries, hasMounted])
+
+  if (!hasMounted) {
+    // Optionally, show a loading spinner or skeleton here
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
