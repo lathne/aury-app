@@ -60,6 +60,28 @@ export function OrderList() {
                   ))}
                 </ul>
               </div>
+              {/* Status do pedido */}
+                <div className="mt-2">
+                  <span
+                    className={
+                      order.status === 'pending'
+                        ? 'text-yellow-600'
+                        : order.status === 'accepted'
+                        ? 'text-green-600'
+                        : order.status === 'completed'
+                        ? 'text-blue-600'
+                        : 'text-red-600'
+                    }
+                  >
+                    Status: {order.status === 'pending'
+                      ? 'Pendente'
+                      : order.status === 'accepted'
+                      ? 'Aceito'
+                      : order.status === 'completed'
+                      ? 'Concluído'
+                      : 'Recusado'}
+                  </span>
+                </div>
             </div>
             <div className="space-y-2">
               <Button
