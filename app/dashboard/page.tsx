@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { deliveries, loading, error } = useDeliveries()
 
+
   const deliveryLocations = deliveries.map(delivery => ({
     id: delivery.id,
     address: delivery.address,
