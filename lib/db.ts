@@ -32,9 +32,11 @@ export async function getOrders(): Promise<Order[]> {
   return db.getAll('orders')
 }
 
-export async function deleteOrder(orderId: string) {
+export async function deleteOrder(orderId: string): Promise<void> {
   const db = await initDB()
-  await db.delete('orders', orderId)
+  const tx = db.transaction('orders', 'readwrite')
+  await tx.objectStore('orders').delete(orderId)
+  await tx.done
 }
 
 export async function saveAuthData(data: AuthData): Promise<void> {

@@ -3,12 +3,13 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { deleteOrder } from '@/lib/db'
 import { useDeliveries } from '@/hooks/use-db'
 import { updateOrderStatus, removeOrder } from '@/lib/features/ordersSlice'
 import type { Order } from '@/lib/types/order'
 
 export function OrderList() {
-  const { deliveries, loading, error } = useDeliveries()
+const { deliveries, loading, error, refetch } = useDeliveries()
 
   const handleAcceptOrder = async (orderId: string) => {
     try {
@@ -20,7 +21,8 @@ export function OrderList() {
 
   const handleRejectOrder = async (orderId: string) => {
     try {
-      await removeOrder(orderId)
+      await deleteOrder(orderId) 
+      await refetch()            
     } catch (err) {
       console.error('Failed to reject order:', err)
     }
