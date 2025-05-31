@@ -32,7 +32,7 @@ export function Header() {
     <header className="bg-white dark:bg-gray-800 shadow-md">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Delivery App</h1>
+          <h1 className="text-xl font-bold">Aury App</h1>
           <div className="flex items-center space-x-4">
             <Button
               variant="ghost"

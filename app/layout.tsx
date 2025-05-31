@@ -6,7 +6,7 @@ import { Providers } from '@/components/providers/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Delivery App',
+  title: 'Aury Delivery App',
   description: 'Aplicativo de delivery para entregadores',
   manifest: '/manifest.json',
 }

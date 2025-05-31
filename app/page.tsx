@@ -26,7 +26,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-100 to-white dark:from-gray-900 dark:to-gray-800">
       <Card className="w-full max-w-md p-6 space-y-6 shadow-lg bg-white dark:bg-gray-800">
         <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
-          Delivery App
+          Aury App
         </h1>
         <p className="text-center text-gray-600 dark:text-gray-300">
           Bem-vindo ao aplicativo para entregadores
