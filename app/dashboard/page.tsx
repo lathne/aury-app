@@ -16,6 +16,7 @@ import { MapView } from '@/components/map/map-view'
 import { Header } from '@/components/layout/header'
 import { CreateOrderForm } from '@/components/orders/create-order-form'
 import { useDeliveries } from '@/hooks/use-db'
+import { Map } from '@/components/map'
 
 type DeliveryLocation = {
   id: string
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const { deliveries, loading, error } = useDeliveries()
   const [deliveryLocations, setDeliveryLocations] = useState<DeliveryLocation[]>([])
   const [hasMounted, setHasMounted] = useState(false)
+  const [selectedDelivery, setSelectedDelivery] = useState<DeliveryLocation | null>(null)
 
  useEffect(() => {
     setHasMounted(true)
@@ -82,11 +84,11 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-4">
             <h2 className="text-xl font-bold mb-4">Pedidos Disponíveis</h2>
-            <OrderList />
+            <OrderList onAccept={delivery => setSelectedDelivery(delivery)}/>
           </Card>
           <Card className="p-4">
             <h2 className="text-xl font-bold mb-4">Mapa de Entregas</h2>
-            <MapView deliveries={deliveryLocations} />
+            <Map selectedDelivery={selectedDelivery} />
           </Card>
         </div>
       </main>

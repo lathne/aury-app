@@ -6,13 +6,34 @@ import { updateOrder, deleteOrder } from '@/lib/db'
 import { useDeliveries } from '@/hooks/use-db'
 import type { Order } from '@/lib/types/order'
 
-export function OrderList() {
+type DeliveryLocation = {
+  id: string;
+  address: string;
+  lat: number;
+  lng: number;
+};
+
+interface OrderListProps {
+  onAccept?: (location: DeliveryLocation) => void;
+}
+
+export function OrderList({ onAccept }: OrderListProps) {
 const { deliveries, loading, error, refetch } = useDeliveries()
 
 const handleAcceptOrder = async (orderId: string) => {
     try {
       await updateOrder(orderId, { status: 'accepted' })
-      await refetch() // Recarrega a lista
+     const accepted = deliveries.find(d => d.id === orderId)
+      if (accepted && onAccept) {
+        const deliveryLocation: DeliveryLocation = {
+          id: accepted.id,
+          address: accepted.address,
+          lat: -23.550520 + Math.random() * 0.1, 
+          lng: -46.633308 + Math.random() * 0.1  
+        }
+        onAccept(deliveryLocation)
+      }
+      await refetch()
     } catch (err) {
       console.error('Failed to accept order:', err)
     }
