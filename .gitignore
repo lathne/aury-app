@@ -52,3 +52,4 @@ yarn-error.log*
 **/public/sw.js
 **/public/service-worker.js.map
 **/public/workbox-*.js.map
+node_modules

@@ -19,6 +19,21 @@ export async function initDB() {
   return db
 }
 
+export async function updateOrder(orderId: string, updates: Partial<Order>): Promise<void> {
+  const db = await initDB()
+  const tx = db.transaction('orders', 'readwrite')
+  const store = tx.objectStore('orders')
+  
+  // Busca o pedido atual
+  const existingOrder = await store.get(orderId)
+  if (existingOrder) {
+    // Atualiza com os novos dados
+    const updatedOrder = { ...existingOrder, ...updates }
+    await store.put(updatedOrder)
+  }
+  await tx.done
+}
+
 export async function saveOrder(order: Order) {
   const db = await initDB()
   await db.put('orders', {

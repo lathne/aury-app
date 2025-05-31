@@ -1,19 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { deleteOrder } from '@/lib/db'
+import { updateOrder, deleteOrder } from '@/lib/db'
 import { useDeliveries } from '@/hooks/use-db'
-import { updateOrderStatus, removeOrder } from '@/lib/features/ordersSlice'
 import type { Order } from '@/lib/types/order'
 
 export function OrderList() {
 const { deliveries, loading, error, refetch } = useDeliveries()
 
-  const handleAcceptOrder = async (orderId: string) => {
+const handleAcceptOrder = async (orderId: string) => {
     try {
-      await updateOrderStatus({ id: orderId, status: 'accepted' })
+      await updateOrder(orderId, { status: 'accepted' })
+      await refetch() // Recarrega a lista
     } catch (err) {
       console.error('Failed to accept order:', err)
     }
