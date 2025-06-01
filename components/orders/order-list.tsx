@@ -5,13 +5,8 @@ import { Card } from '@/components/ui/card'
 import { updateOrder, deleteOrder } from '@/lib/db'
 import { useDeliveries } from '@/hooks/use-db'
 import type { Order } from '@/lib/types/order'
+import type { DeliveryLocation } from '@/lib/types/delivery'
 
-type DeliveryLocation = {
-  id: string;
-  address: string;
-  lat: number;
-  lng: number;
-};
 
 interface OrderListProps {
   onAccept?: (location: DeliveryLocation) => void;

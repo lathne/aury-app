@@ -17,16 +17,11 @@ import { Header } from '@/components/layout/header'
 import { CreateOrderForm } from '@/components/orders/create-order-form'
 import { useDeliveries } from '@/hooks/use-db'
 import { Map } from '@/components/map'
-
-type DeliveryLocation = {
-  id: string
-  address: string
-  lat: number
-  lng: number
-}
+import type { DeliveryLocation } from '@/lib/types/delivery'
+import { useNetworkStatus } from '@/hooks/useNetworkStatus'
 
 export default function Dashboard() {
-  const [isOnline, setIsOnline] = useState(true)
+  const isOnline = useNetworkStatus();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { deliveries, loading, error } = useDeliveries()
   const [deliveryLocations, setDeliveryLocations] = useState<DeliveryLocation[]>([])
@@ -51,7 +46,6 @@ export default function Dashboard() {
   }, [deliveries, hasMounted])
 
   if (!hasMounted) {
-    // Optionally, show a loading spinner or skeleton here
     return null
   }
 

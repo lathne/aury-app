@@ -4,13 +4,8 @@
 
 import { Card } from "@/components/ui/card";
 import { getGoogleMapsApiKey, getOriginAddress } from "@/lib/map-config";
+import type { DeliveryLocation } from '@/lib/types/delivery'
 
-type DeliveryLocation = {
-  id: string;
-  address: string;
-  lat: number;
-  lng: number;
-};
 
 interface MapProps {
   selectedDelivery: DeliveryLocation | null;

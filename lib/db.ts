@@ -24,10 +24,8 @@ export async function updateOrder(orderId: string, updates: Partial<Order>): Pro
   const tx = db.transaction('orders', 'readwrite')
   const store = tx.objectStore('orders')
   
-  // Busca o pedido atual
   const existingOrder = await store.get(orderId)
   if (existingOrder) {
-    // Atualiza com os novos dados
     const updatedOrder = { ...existingOrder, ...updates }
     await store.put(updatedOrder)
   }
