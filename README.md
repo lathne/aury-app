@@ -15,7 +15,6 @@ Aury App is a modern, offline-first Progressive Web App (PWA) built with [Next.j
 - **shadcn/ui** and **Radix UI** for accessible, customizable components
 - **PWA**: Service Worker, manifest, and offline caching
 - **Theme support** with `next-themes`
-- **Mobile-friendly** and installable
 
 ---
 
