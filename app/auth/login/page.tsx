@@ -1,45 +1,45 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useAppDispatch } from '@/lib/hooks'
-import { loginSuccess } from '@/lib/features/authSlice'
-import { saveAuthData } from '@/lib/db'
-import type { AuthUser } from '@/lib/types/auth'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/lib/hooks";
+import { loginSuccess } from "@/lib/features/authSlice";
+import { saveAuthData } from "@/lib/db";
+import type { AuthUser } from "@/lib/types/auth";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const dispatch = useAppDispatch()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       // Simulate authentication
       const userData: AuthUser = {
-        id: '1',
+        id: "1",
         email,
-        name: 'Entregador',
-        token: 'mock-token'
-      }
-      
+        name: "Entregador",
+        token: "mock-token",
+      };
+
       // Save auth data for offline access with timestamp
       await saveAuthData({
         ...userData,
-        timestamp: Date.now()
-      })
-      
-      dispatch(loginSuccess(userData))
-      router.push('/dashboard')
+        timestamp: Date.now(),
+      });
+
+      dispatch(loginSuccess(userData));
+      router.push("/dashboard");
     } catch (err) {
-      setError('Falha no login. Tente novamente.')
+      setError("Falha no login. Tente novamente.");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -75,5 +75,5 @@ export default function LoginPage() {
         </form>
       </Card>
     </div>
-  )
+  );
 }

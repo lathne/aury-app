@@ -1,12 +1,11 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function Home() {
-  const router = useRouter()
-
+  const router = useRouter();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-100 to-white dark:from-gray-900 dark:to-gray-800">
@@ -18,21 +17,18 @@ export default function Home() {
           Bem-vindo ao aplicativo para entregadores
         </p>
         <div className="space-y-4">
-          <Button
-            className="w-full"
-            onClick={() => router.push('/auth/login')}
-          >
+          <Button className="w-full" onClick={() => router.push("/auth/login")}>
             Login
           </Button>
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => router.push('/auth/register')}
+            onClick={() => router.push("/auth/register")}
           >
             Cadastrar
           </Button>
         </div>
       </Card>
     </main>
-  )
+  );
 }

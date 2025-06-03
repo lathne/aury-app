@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { logout } from '@/lib/features/authSlice'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { logout } from "@/lib/features/authSlice";
 
 export default function ProfilePage() {
-  const router = useRouter()
-  const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.auth.user)
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (!user) {
-      router.push('/auth/login')
+      router.push("/auth/login");
     }
-  }, [user, router])
+  }, [user, router]);
 
   const handleLogout = () => {
-    dispatch(logout())
-    router.push('/auth/login')
-  }
+    dispatch(logout());
+    router.push("/auth/login");
+  };
 
   if (!user) {
-    return null
+    return null;
   }
 
   return (
@@ -52,5 +52,5 @@ export default function ProfilePage() {
         </Card>
       </main>
     </div>
-  )
+  );
 }

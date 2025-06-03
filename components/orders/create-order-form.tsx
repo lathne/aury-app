@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -14,54 +14,56 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { useAppDispatch } from '@/lib/hooks'
-import { addOrder } from '@/lib/features/ordersSlice'
-import { saveOrder } from '@/lib/db'
-import type { Order } from '@/lib/types/order'
+} from "@/components/ui/form";
+import { useAppDispatch } from "@/lib/hooks";
+import { addOrder } from "@/lib/features/ordersSlice";
+import { saveOrder } from "@/lib/db";
+import type { Order } from "@/lib/types/order";
 
 const orderSchema = z.object({
-  customer: z.string().min(3, 'Nome do cliente deve ter no mínimo 3 caracteres'),
-  address: z.string().min(10, 'Endereço deve ter no mínimo 10 caracteres'),
-  items: z.string().min(3, 'Adicione pelo menos um item ao pedido'),
-})
+  customer: z
+    .string()
+    .min(3, "Nome do cliente deve ter no mínimo 3 caracteres"),
+  address: z.string().min(10, "Endereço deve ter no mínimo 10 caracteres"),
+  items: z.string().min(3, "Adicione pelo menos um item ao pedido"),
+});
 
-type OrderFormValues = z.infer<typeof orderSchema>
+type OrderFormValues = z.infer<typeof orderSchema>;
 
 export function CreateOrderForm({ onClose }: { onClose: () => void }) {
-  const dispatch = useAppDispatch()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const dispatch = useAppDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      customer: '',
-      address: '',
-      items: '',
+      customer: "",
+      address: "",
+      items: "",
     },
-  })
+  });
 
   const onSubmit = async (data: OrderFormValues) => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       const newOrder: Order = {
         id: Date.now().toString(),
         customer: data.customer,
         address: data.address,
-        items: data.items.split('\n').filter(item => item.trim() !== ''),
-        status: 'pending',
+        items: data.items.split("\n").filter((item) => item.trim() !== ""),
+        status: "pending",
         timestamp: Date.now(),
-      }
+      };
 
-      await saveOrder(newOrder)
-      dispatch(addOrder(newOrder))
-      onClose()
+      await saveOrder(newOrder);
+      dispatch(addOrder(newOrder));
+      onClose();
     } catch (error) {
-      console.error('Failed to create order:', error)
+      console.error("Failed to create order:", error);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -121,10 +123,10 @@ export function CreateOrderForm({ onClose }: { onClose: () => void }) {
             Cancelar
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Criando...' : 'Criar Pedido'}
+            {isSubmitting ? "Criando..." : "Criar Pedido"}
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

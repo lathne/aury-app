@@ -1,35 +1,35 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function RegisterPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
-  const [error, setError] = useState('')
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      setError('As senhas não coincidem')
-      return
+      setError("As senhas não coincidem");
+      return;
     }
-    
+
     try {
       // Simulate registration
-      router.push('/auth/login')
+      router.push("/auth/login");
     } catch (err) {
-      setError('Falha no cadastro. Tente novamente.')
+      setError("Falha no cadastro. Tente novamente.");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -46,7 +46,9 @@ export default function RegisterPage() {
               type="text"
               placeholder="Nome"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
             />
           </div>
@@ -55,7 +57,9 @@ export default function RegisterPage() {
               type="email"
               placeholder="Email"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               required
             />
           </div>
@@ -64,7 +68,9 @@ export default function RegisterPage() {
               type="password"
               placeholder="Senha"
               value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               required
             />
           </div>
@@ -73,7 +79,9 @@ export default function RegisterPage() {
               type="password"
               placeholder="Confirmar Senha"
               value={formData.confirmPassword}
-              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
               required
             />
           </div>
@@ -83,5 +91,5 @@ export default function RegisterPage() {
         </form>
       </Card>
     </div>
-  )
+  );
 }

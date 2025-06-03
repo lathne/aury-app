@@ -10,5 +10,5 @@ export default function OfflinePage() {
         </p>
       </div>
     </div>
-  )
+  );
 }

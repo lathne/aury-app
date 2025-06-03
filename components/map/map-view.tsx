@@ -1,28 +1,28 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { Card } from '@/components/ui/card'
-import Image from 'next/image'
+import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
+import Image from "next/image";
 
 interface MapViewProps {
   deliveries: Array<{
-    id: string
-    address: string
-    lat: number
-    lng: number
-  }>
+    id: string;
+    address: string;
+    lat: number;
+    lng: number;
+  }>;
 }
 
 export function MapView({ deliveries }: MapViewProps) {
-  const [isMapLoading, setIsMapLoading] = useState(true)
+  const [isMapLoading, setIsMapLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsMapLoading(false)
-    }, 1000)
+      setIsMapLoading(false);
+    }, 1000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Card className="w-full h-[500px] overflow-hidden relative">
@@ -49,5 +49,5 @@ export function MapView({ deliveries }: MapViewProps) {
         </div>
       )}
     </Card>
-  )
+  );
 }

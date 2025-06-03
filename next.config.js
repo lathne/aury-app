@@ -1,15 +1,15 @@
-const path = require('path');
-const withPWA = require('next-pwa')({
-  dest: 'public',
+const path = require("path");
+const withPWA = require("next-pwa")({
+  dest: "public",
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-  runtimeCaching: require('./runtimeCaching'),
+  disable: process.env.NODE_ENV === "development",
+  runtimeCaching: require("./runtimeCaching"),
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: process.env.NEXT_DIST_DIR || '.next',
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   output: process.env.NEXT_OUTPUT_MODE,
   outputFileTracingRoot: __dirname,
   eslint: {
@@ -20,7 +20,6 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   reactStrictMode: true,
-  experimental: { appDir: true },
 };
 
 module.exports = withPWA(nextConfig);

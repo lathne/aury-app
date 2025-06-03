@@ -1,11 +1,10 @@
 // components/map.tsx
 
-'use client';
+"use client";
 
 import { Card } from "@/components/ui/card";
 import { getGoogleMapsApiKey, getOriginAddress } from "@/lib/map-config";
-import type { DeliveryLocation } from '@/lib/types/delivery'
-
+import type { DeliveryLocation } from "@/lib/types/delivery";
 
 interface MapProps {
   selectedDelivery: DeliveryLocation | null;
@@ -25,7 +24,7 @@ export function Map({ selectedDelivery }: MapProps) {
   const address = encodeURIComponent(selectedDelivery.address);
   const apiKey = getGoogleMapsApiKey();
   const originAddress = encodeURIComponent(getOriginAddress());
-  
+
   const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${originAddress}&destination=${address}`;
 
   return (
