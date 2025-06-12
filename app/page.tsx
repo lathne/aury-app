@@ -16,17 +16,19 @@ export default function Home() {
         <p className="text-center text-gray-600 dark:text-gray-300">
           Bem-vindo ao aplicativo para entregadores
         </p>
-        <div className="space-y-4">
-          <Button className="w-full" onClick={() => router.push("/auth/login")}>
+        <div className="space-y-6">
+          <button 
+            className="w-full h-12 text-lg font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+            onClick={() => router.push("/auth/login")}
+          >
             Login
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full"
+          </button>
+          <button
+            className="w-full h-12 text-lg font-medium rounded-lg border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             onClick={() => router.push("/auth/register")}
           >
             Cadastrar
-          </Button>
+          </button>
         </div>
       </Card>
     </main>
