@@ -1,6 +1,7 @@
 import { openDB } from "idb";
 import type { AuthData } from "@/lib/types/auth";
 import type { Order } from "@/lib/types/order";
+import type { PendingAction } from "@/lib/types/order";
 
 const DB_NAME = "delivery-app-db";
 const DB_VERSION = 1;
@@ -63,4 +64,33 @@ export async function saveAuthData(data: AuthData): Promise<void> {
 export async function getAuthData(): Promise<AuthData[]> {
   const db = await initDB();
   return db.getAll("auth");
+}
+
+// --- OFFLINE ACTIONS ---
+
+export async function addPendingAction(action: PendingAction) {
+  const db = await initDB();
+  await db.add("pendingActions", {
+    ...action,
+    timestamp: Date.now(),
+  });
+}
+
+export async function getPendingActions(): Promise<PendingAction[]> {
+  const db = await initDB();
+  return db.getAll("pendingActions");
+}
+
+export async function clearPendingAction(id: number) {
+  const db = await initDB();
+  const tx = db.transaction("pendingActions", "readwrite");
+  await tx.objectStore("pendingActions").delete(id);
+  await tx.done;
+}
+
+export async function clearAllPendingActions() {
+  const db = await initDB();
+  const tx = db.transaction("pendingActions", "readwrite");
+  await tx.objectStore("pendingActions").clear();
+  await tx.done;
 }

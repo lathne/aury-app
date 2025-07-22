@@ -6,3 +6,12 @@ export interface Order {
   items: string[];
   timestamp?: number;
 }
+
+export interface PendingAction {
+  id?: number;
+  type: "create" | "update" | "delete";
+  order: Order;
+  updates?: Partial<Order>;
+  timestamp: number;
+}
+
