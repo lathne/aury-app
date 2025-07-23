@@ -47,6 +47,21 @@ export default function Dashboard() {
     }
   }, [deliveries, hasMounted]);
 
+    useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(
+        (registration) => {
+          console.log("Service Worker registrado Dashboard:", registration);
+        },
+        (err) => {
+          console.error("Erro ao registrar o Service Worker:", err);
+        }
+      );
+    } else {
+      console.warn("Service Workers não são registrado neste navegador.");
+    }
+  }, []);
+
   if (!hasMounted) {
     return null;
   }

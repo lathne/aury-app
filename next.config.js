@@ -5,6 +5,9 @@ const withPWA = require("next-pwa")({
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
   runtimeCaching: require("./runtimeCaching"),
+  fallbacks: {
+    document: "/offline",
+  },
 });
 
 /** @type {import('next').NextConfig} */
