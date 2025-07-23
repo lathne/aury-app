@@ -1,5 +1,3 @@
-// components/map.tsx
-
 "use client";
 
 import { Card } from "@/components/ui/card";

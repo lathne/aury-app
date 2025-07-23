@@ -12,7 +12,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { OrderList } from "@/components/orders/order-list";
-import { MapView } from "@/components/map/map-view";
 import { Header } from "@/components/layout/header";
 import { CreateOrderForm } from "@/components/orders/create-order-form";
 import { useDeliveries } from "@/hooks/use-db";
