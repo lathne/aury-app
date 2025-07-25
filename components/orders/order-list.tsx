@@ -10,24 +10,36 @@ interface OrderListProps {
   deliveries: Order[];
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>; // Adicionar refetch para as ações de aceitar/recusar
+  refetch: () => Promise<void>;
   onAccept?: (location: DeliveryLocation) => void;
 }
 
 export function OrderList({ deliveries, loading, error, refetch, onAccept }: OrderListProps) {
 
-  const handleAcceptOrder = async (orderId: string) => {
+const handleAcceptOrder = async (orderId: string) => {
     try {
       await updateOrder(orderId, { status: "accepted" });
       const accepted = deliveries.find((d) => d.id === orderId);
+
       if (accepted && onAccept) {
-        const deliveryLocation: DeliveryLocation = {
-          id: accepted.id,
-          address: accepted.address,
-          lat: -23.55052 + Math.random() * 0.1,
-          lng: -46.633308 + Math.random() * 0.1,
-        };
-        onAccept(deliveryLocation);
+        if (accepted.lat && accepted.lng) {
+          const deliveryLocation: DeliveryLocation = {
+            id: accepted.id,
+            address: accepted.address,
+            lat: accepted.lat, 
+            lng: accepted.lng, 
+          };
+          onAccept(deliveryLocation);
+        } else {
+          console.warn(`Order ${accepted.id} has no coordinates.`);
+           const fallbackLocation: DeliveryLocation = {
+            id: accepted.id,
+            address: accepted.address,
+            lat: 0,
+            lng: 0,
+          };
+          onAccept(fallbackLocation);
+        }
       }
       await refetch();
     } catch (err) {

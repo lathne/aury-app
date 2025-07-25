@@ -5,6 +5,8 @@ export interface Order {
   customer: string;
   items: string[];
   timestamp?: number;
+  lat?: number;
+  lng?: number;
 }
 
 export interface PendingAction {

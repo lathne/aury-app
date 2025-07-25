@@ -19,6 +19,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { addOrder } from "@/lib/features/ordersSlice";
 import { saveOrder } from "@/lib/db";
 import type { Order } from "@/lib/types/order";
+import { geocodeAddress } from "@/lib/geocoding";
 
 const orderSchema = z.object({
   customer: z
@@ -46,6 +47,7 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
   const onSubmit = async (data: OrderFormValues) => {
     try {
       setIsSubmitting(true);
+      const coords = await geocodeAddress(data.address);
       const newOrder: Order = {
         id: Date.now().toString(),
         customer: data.customer,
@@ -53,6 +55,8 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
         items: data.items.split("\n").filter((item) => item.trim() !== ""),
         status: "pending",
         timestamp: Date.now(),
+        lat: coords?.lat,
+        lng: coords?.lng,
       };
 
       dispatch(addOrder(newOrder));
