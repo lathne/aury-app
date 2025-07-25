@@ -3,16 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { updateOrder, deleteOrder } from "@/lib/db";
-import { useDeliveries } from "@/hooks/use-db";
 import type { Order } from "@/lib/types/order";
 import type { DeliveryLocation } from "@/lib/types/delivery";
 
 interface OrderListProps {
+  deliveries: Order[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>; // Adicionar refetch para as ações de aceitar/recusar
   onAccept?: (location: DeliveryLocation) => void;
 }
 
-export function OrderList({ onAccept }: OrderListProps) {
-  const { deliveries, loading, error, refetch } = useDeliveries();
+export function OrderList({ deliveries, loading, error, refetch, onAccept }: OrderListProps) {
 
   const handleAcceptOrder = async (orderId: string) => {
     try {

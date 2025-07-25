@@ -30,7 +30,7 @@ const orderSchema = z.object({
 
 type OrderFormValues = z.infer<typeof orderSchema>;
 
-export function CreateOrderForm({ onClose }: { onClose: () => void }) {
+export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => void, onOrderCreated?: () => void }) {
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -55,9 +55,15 @@ export function CreateOrderForm({ onClose }: { onClose: () => void }) {
         timestamp: Date.now(),
       };
 
-      await saveOrder(newOrder);
       dispatch(addOrder(newOrder));
       onClose();
+     
+      await saveOrder(newOrder);
+
+      if (onOrderCreated) {
+        await onOrderCreated();
+      }
+
     } catch (error) {
       console.error("Failed to create order:", error);
     } finally {

@@ -15,6 +15,12 @@ export async function initDB() {
       if (!db.objectStoreNames.contains("auth")) {
         db.createObjectStore("auth", { keyPath: "id" });
       }
+      if (!db.objectStoreNames.contains("pendingActions")) {
+        db.createObjectStore("pendingActions", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+     }
     },
   });
   return db;

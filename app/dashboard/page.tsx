@@ -22,7 +22,7 @@ import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 export default function Dashboard() {
   const isOnline = useNetworkStatus();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { deliveries, loading, error } = useDeliveries();
+  const { deliveries, refetch, loading, error } = useDeliveries();
   const [deliveryLocations, setDeliveryLocations] = useState<
     DeliveryLocation[]
   >([]);
@@ -88,14 +88,20 @@ export default function Dashboard() {
               <DialogHeader>
                 <DialogTitle>Criar Novo Pedido</DialogTitle>
               </DialogHeader>
-              <CreateOrderForm onClose={() => setIsDialogOpen(false)} />
+              <CreateOrderForm onClose={() => setIsDialogOpen(false)} onOrderCreated={refetch} />
             </DialogContent>
           </Dialog>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-4">
             <h2 className="text-xl font-bold mb-4">Pedidos Disponíveis</h2>
-            <OrderList onAccept={(delivery) => setSelectedDelivery(delivery)} />
+            <OrderList
+              deliveries={deliveries}
+              loading={loading}
+              error={error}
+              refetch={refetch}
+              onAccept={(delivery) => setSelectedDelivery(delivery)}
+            />
           </Card>
           <Card className="p-4">
             <h2 className="text-xl font-bold mb-4">Mapa de Entregas</h2>
