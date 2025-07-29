@@ -52,13 +52,16 @@ export default function Dashboard() {
       navigator.serviceWorker.register("/sw.js").then(
         (registration) => {
           console.log("Service Worker registrado Dashboard:", registration);
+          console.log(isOnline ? "Online" : "Offline");
         },
         (err) => {
           console.error("Erro ao registrar o Service Worker:", err);
+          console.log(isOnline ? "Online" : "Offline");
         }
       );
     } else {
       console.warn("Service Workers não são registrado neste navegador.");
+      console.log(isOnline ? "Online" : "Offline");
     }
   }, []);
 

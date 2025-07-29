@@ -11,9 +11,8 @@ export interface Order {
 
 export interface PendingAction {
   id?: number;
-  type: "create" | "update" | "delete";
-  order: Order;
-  updates?: Partial<Order>;
+  type: "CREATE_ORDER" | "UPDATE_ORDER" | "DELETE_ORDER" | "GEOCODE_ORDER";
+  payload: any;
   timestamp: number;
 }
 

@@ -52,6 +52,16 @@ const apiJSON = {
   },
 };
 
+const googleMapsApi = {
+  urlPattern: /^https:\/\/maps\.googleapis\.com\/.*/i,
+  handler: 'NetworkFirst',
+  options: {
+    cacheName: 'google-maps-api',
+    networkTimeoutSeconds: 5,
+    expiration: { maxEntries: 30, maxAgeSeconds: 30 * 24 * 60 * 60 },
+  },
+};
+
 module.exports = [
   pageHandler,
   localImages,
@@ -59,4 +69,5 @@ module.exports = [
   nextImage,
   googleFonts,
   apiJSON,
+  googleMapsApi
 ];

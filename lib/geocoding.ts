@@ -23,7 +23,7 @@ export async function geocodeAddress(
         lng: location.lng,
       };
     } else {
-      console.error("Geocoding failed:", data.status, data.error_message);
+      console.error("Geocoding failed:",data  , "data.status:",data.status,"data.error_message:", data.error_message);
       return null;
     }
   } catch (error) {

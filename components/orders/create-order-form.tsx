@@ -17,9 +17,10 @@ import {
 } from "@/components/ui/form";
 import { useAppDispatch } from "@/lib/hooks";
 import { addOrder } from "@/lib/features/ordersSlice";
-import { saveOrder } from "@/lib/db";
+import { saveOrder, addPendingAction } from "@/lib/db";
 import type { Order } from "@/lib/types/order";
 import { geocodeAddress } from "@/lib/geocoding";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 
 const orderSchema = z.object({
   customer: z
@@ -34,6 +35,7 @@ type OrderFormValues = z.infer<typeof orderSchema>;
 export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => void, onOrderCreated?: () => void }) {
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isOnline = useNetworkStatus();
 
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderSchema),
@@ -47,9 +49,11 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
   const onSubmit = async (data: OrderFormValues) => {
     try {
       setIsSubmitting(true);
+      const newOrderId = Date.now().toString();
       const coords = await geocodeAddress(data.address);
+
       const newOrder: Order = {
-        id: Date.now().toString(),
+        id: newOrderId,
         customer: data.customer,
         address: data.address,
         items: data.items.split("\n").filter((item) => item.trim() !== ""),
@@ -59,11 +63,25 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
         lng: coords?.lng,
       };
 
+      await saveOrder(newOrder);
+      
+      if (!isOnline) {
+        await addPendingAction({
+          type: "CREATE_ORDER",
+          payload: newOrder,
+          timestamp: Date.now(),
+        });
+        // Ação para geocodificar mais tarde
+        await addPendingAction({
+          type: "GEOCODE_ORDER",
+          payload: { orderId: newOrderId, address: newOrder.address },
+          timestamp: Date.now(),
+        });
+      }
+     
       dispatch(addOrder(newOrder));
       onClose();
      
-      await saveOrder(newOrder);
-
       if (onOrderCreated) {
         await onOrderCreated();
       }
