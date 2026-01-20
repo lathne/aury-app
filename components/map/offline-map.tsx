@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MapPin, Navigation, Wifi, WifiOff } from "lucide-react";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
@@ -15,7 +15,10 @@ interface OfflineMapProps {
 
 export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
   const isOnline = useNetworkStatus();
-  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   useEffect(() => {
     // Tentar obter localização do usuário (funciona offline)
@@ -29,7 +32,7 @@ export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
         },
         (error) => {
           console.log("Erro ao obter localização:", error);
-        }
+        },
       );
     }
   }, []);
@@ -56,9 +59,16 @@ export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
   };
 
   return (
-    <div className="h-64 bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col items-center justify-center relative">
+    <div className="h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col items-center justify-center relative overflow-hidden">
+      <Image
+        src="/maps/offline-map-placeholder.svg"
+        alt="Mapa offline"
+        fill
+        className="object-cover opacity-60"
+        priority
+      />
       {/* Status da conexão */}
-      <div className="absolute top-2 right-2 flex items-center gap-1 bg-white dark:bg-gray-900 px-2 py-1 rounded text-xs">
+      <div className="absolute top-2 right-2 flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 px-2 py-1 rounded text-xs">
         {isOnline ? (
           <>
             <Wifi className="h-3 w-3 text-green-500" />
@@ -73,8 +83,8 @@ export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
       </div>
 
       {selectedDelivery ? (
-        <div className="text-center space-y-4">
-          <MapPin className="h-12 w-12 text-blue-500 mx-auto" />
+        <div className="text-center space-y-4 relative z-10 px-4">
+          <MapPin className="h-12 w-12 text-blue-600 mx-auto" />
           <div>
             <h3 className="font-medium">Entrega Selecionada</h3>
             <p className="text-sm text-gray-600 mt-1">{selectedDelivery.address}</p>
@@ -94,7 +104,7 @@ export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
           </div>
         </div>
       ) : (
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 relative z-10 px-4">
           <MapPin className="h-12 w-12 text-gray-400 mx-auto" />
           <div>
             <h3 className="font-medium text-gray-600">Nenhuma entrega selecionada</h3>
@@ -109,7 +119,7 @@ export function OfflineMap({ selectedDelivery }: OfflineMapProps) {
       )}
 
       {!isOnline && (
-        <div className="absolute bottom-2 left-2 right-2 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 text-xs p-2 rounded">
+        <div className="absolute bottom-2 left-2 right-2 bg-yellow-100/90 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 text-xs p-2 rounded">
           Modo offline: Funcionalidades de mapa limitadas
         </div>
       )}

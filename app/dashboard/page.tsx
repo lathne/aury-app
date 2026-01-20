@@ -18,9 +18,11 @@ import { useDeliveries } from "@/hooks/use-db";
 import { Map } from "@/components/map";
 import type { DeliveryLocation } from "@/lib/types/delivery";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { useSync } from "@/hooks/use-sync";
 
 export default function Dashboard() {
   const isOnline = useNetworkStatus();
+  useSync();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { deliveries, refetch, loading, error } = useDeliveries();
   const [deliveryLocations, setDeliveryLocations] = useState<

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { updateOrder, deleteOrder, addPendingAction, getPendingActions } from "@/lib/db";
+import { updateOrder, deleteOrder, addPendingAction } from "@/lib/db";
 import type { Order } from "@/lib/types/order";
 import type { DeliveryLocation } from "@/lib/types/delivery";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
@@ -27,35 +27,30 @@ export function OrderList({ deliveries, loading, error, refetch, onAccept }: Ord
             payload: { orderId, status: "accepted" },
             timestamp: Date.now(),
           });
-
-          setTimeout(() => {
-           console.log("Added pending action for handleAcceptOrder in OrderList", getPendingActions());
-          }, 1000);
-        } else {
-          await updateOrder(orderId, { status: "accepted" });
-        
-          const accepted = deliveries.find((d) => d.id === orderId);
-
-          if (accepted && onAccept) {
-            if (accepted.lat && accepted.lng) {
-              const deliveryLocation: DeliveryLocation = {
-                id: accepted.id,
-                address: accepted.address,
-                lat: accepted.lat, 
-                lng: accepted.lng, 
-              };
-              onAccept(deliveryLocation);
-            } else {
-              console.warn(`Order ${accepted.id} has no coordinates.`);
-              const fallbackLocation: DeliveryLocation = {
-                id: accepted.id,
-                address: accepted.address,
-                lat: 0,
-                lng: 0,
-              };
-              onAccept(fallbackLocation);
-            }
         }
+        await updateOrder(orderId, { status: "accepted" });
+
+        const accepted = deliveries.find((d) => d.id === orderId);
+
+        if (accepted && onAccept) {
+          if (accepted.lat && accepted.lng) {
+            const deliveryLocation: DeliveryLocation = {
+              id: accepted.id,
+              address: accepted.address,
+              lat: accepted.lat,
+              lng: accepted.lng,
+            };
+            onAccept(deliveryLocation);
+          } else {
+            console.warn(`Order ${accepted.id} has no coordinates.`);
+            const fallbackLocation: DeliveryLocation = {
+              id: accepted.id,
+              address: accepted.address,
+              lat: 0,
+              lng: 0,
+            };
+            onAccept(fallbackLocation);
+          }
         }
         await refetch();
       } catch (err) {
@@ -72,12 +67,8 @@ export function OrderList({ deliveries, loading, error, refetch, onAccept }: Ord
             payload: { orderId },
             timestamp: Date.now(),
           });
-          setTimeout(() => {
-            console.log("Added pending action for handleRejectOrder in OrderList", getPendingActions());
-          }, 1000);
-        } else {
-          await deleteOrder(orderId);
         }
+        await deleteOrder(orderId);
 
         await refetch();
       } catch (err) {

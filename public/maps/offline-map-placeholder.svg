@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="300" viewBox="0 0 600 300" role="img" aria-label="Mapa offline">
+  <rect width="600" height="300" fill="#e5e7eb" />
+  <path d="M40 220 L180 120 L320 200 L460 90 L560 140" fill="none" stroke="#9ca3af" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="180" cy="120" r="10" fill="#3b82f6" />
+  <circle cx="320" cy="200" r="10" fill="#ef4444" />
+  <text x="50%" y="55%" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="20">Mapa offline</text>
+</svg>
