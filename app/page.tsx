@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,20 +6,8 @@ import { Card } from "@/components/ui/card";
 export default function Home() {
   const router = useRouter();
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").then(
-        (registration) => {
-          console.log("Service Worker registrado Home:", registration);
-        },
-        (err) => {
-          console.error("Erro ao registrar o Service Worker:", err);
-        }
-      );
-    } else {
-      console.warn("Service Workers não são registrado neste navegador.");
-    }
-  }, []);
+  // Service Worker agora é registrado via ScriptManager no layout
+  // Removido daqui para evitar bloqueio de renderização
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-blue-100 to-white dark:from-gray-900 dark:to-gray-800">
