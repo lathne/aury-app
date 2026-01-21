@@ -23,33 +23,39 @@ export function useSync() {
       const actions = await getPendingActions();
       if (actions.length !== 0) {
         for (const action of actions) {
-          switch (action.type) {
-            case "CREATE_ORDER": {
-              await saveOrder(action.payload);
-              break;
-            }
-            case "UPDATE_ORDER": {
-              await updateOrder(action.payload.orderId, {
-                status: action.payload.status,
-              });
-              break;
-            }
-            case "DELETE_ORDER": {
-              await deleteOrder(action.payload.orderId);
-              break;
-            }
-            case "GEOCODE_ORDER": {
-              const coords = await geocodeAddress(action.payload.address);
-              if (coords) {
-                await updateOrder(action.payload.orderId, coords);
+          try {
+            switch (action.type) {
+              case "CREATE_ORDER": {
+                await saveOrder(action.payload);
+                break;
               }
-              break;
+              case "UPDATE_ORDER": {
+                await updateOrder(action.payload.orderId, {
+                  status: action.payload.status,
+                });
+                break;
+              }
+              case "DELETE_ORDER": {
+                await deleteOrder(action.payload.orderId);
+                break;
+              }
+              case "GEOCODE_ORDER": {
+                const coords = await geocodeAddress(action.payload.address);
+                if (coords) {
+                  await updateOrder(action.payload.orderId, coords);
+                }
+                break;
+              }
+              default:
+                console.warn(`Unknown action type: ${action.type}`);
             }
-            default:
-              console.warn(`Unknown action type: ${action.type}`);
-          }
-          if (action.id !== undefined) {
-            await clearPendingAction(action.id);
+            
+            if (action.id !== undefined) {
+              await clearPendingAction(action.id);
+            }
+          } catch (actionError) {
+            console.error(`Failed to process action ${action.type}:`, actionError);
+            // Continue processing other actions even if one fails
           }
         }
       }
