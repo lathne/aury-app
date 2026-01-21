@@ -50,7 +50,7 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
     try {
       setIsSubmitting(true);
       const newOrderId = Date.now().toString();
-      const coords = await geocodeAddress(data.address);
+      const coords = isOnline ? await geocodeAddress(data.address) : null;
 
       const newOrder: Order = {
         id: newOrderId,
@@ -72,6 +72,12 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
           timestamp: Date.now(),
         });
         // Ação para geocodificar mais tarde
+        await addPendingAction({
+          type: "GEOCODE_ORDER",
+          payload: { orderId: newOrderId, address: newOrder.address },
+          timestamp: Date.now(),
+        });
+      } else if (!coords) {
         await addPendingAction({
           type: "GEOCODE_ORDER",
           payload: { orderId: newOrderId, address: newOrder.address },

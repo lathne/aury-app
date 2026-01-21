@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { getGoogleMapsApiKey, getOriginAddress } from "@/lib/map-config";
 import type { DeliveryLocation } from "@/lib/types/delivery";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { OfflineMap } from "@/components/map/offline-map";
 
 interface MapProps {
   selectedDelivery: DeliveryLocation | null;
@@ -13,6 +14,10 @@ export function Map({ selectedDelivery }: MapProps) {
   const isOnline = useNetworkStatus();
 
   const renderContent = () => {
+    if (!isOnline) {
+      return <OfflineMap selectedDelivery={selectedDelivery} />;
+    }
+
     if (!selectedDelivery) {
       return (
         <Card className="p-4 h-[500px] bg-gray-100">
@@ -22,23 +27,18 @@ export function Map({ selectedDelivery }: MapProps) {
         </Card>
       );
     }
-
-    if (!isOnline) {
-      return (
-        <Card className="p-4 h-[500px] bg-gray-100">
-          <div className="h-full flex items-center justify-center">
-            <p className="text-red-500">Você está offline. O mapa não pode ser carregado.</p>
-          </div>
-        </Card>
-      );
-    }
-  }
+  };
 
   const address = selectedDelivery ? encodeURIComponent(selectedDelivery.address) : "";
   const apiKey = getGoogleMapsApiKey();
   const originAddress = encodeURIComponent(getOriginAddress());
 
   const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${originAddress}&destination=${address}`;
+
+  const content = renderContent();
+  if (content) {
+    return content;
+  }
 
   return (
     <Card className="p-4 h-[500px] bg-gray-100">

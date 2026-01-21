@@ -2,9 +2,14 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useNetworkStatus } from "./useNetworkStatus";
-import { getPendingActions, clearPendingAction } from "@/lib/db";
-import { addOrder, updateOrderStatus, removeOrder } from "@/lib/features/ordersSlice";  
-import type { PendingAction, Order } from "@/lib/types/order";
+import {
+  getPendingActions,
+  clearPendingAction,
+  saveOrder,
+  updateOrder,
+  deleteOrder,
+} from "@/lib/db";
+import { geocodeAddress } from "@/lib/geocoding";
 
 export function useSync() {
   const isOnline = useNetworkStatus();
@@ -16,30 +21,36 @@ export function useSync() {
     setSyncing(true);
     try {
       const actions = await getPendingActions();
-        console.log("Pending actions to sync:", actions);
-        console.log("actions.length:", actions.length);
-       if (actions.length !== 0) {
-          for (const action of actions) {
-            switch (action.type) {
-            case "CREATE_ORDER":
-                // Logic to create order
-                break;
-            case "UPDATE_ORDER":
-                // Logic to update order
-                break;
-            case "DELETE_ORDER":
-                // Logic to delete order
-                break;
-            case "GEOCODE_ORDER":
-                // Logic to geocode order
-                break;
+      if (actions.length !== 0) {
+        for (const action of actions) {
+          switch (action.type) {
+            case "CREATE_ORDER": {
+              await saveOrder(action.payload);
+              break;
+            }
+            case "UPDATE_ORDER": {
+              await updateOrder(action.payload.orderId, {
+                status: action.payload.status,
+              });
+              break;
+            }
+            case "DELETE_ORDER": {
+              await deleteOrder(action.payload.orderId);
+              break;
+            }
+            case "GEOCODE_ORDER": {
+              const coords = await geocodeAddress(action.payload.address);
+              if (coords) {
+                await updateOrder(action.payload.orderId, coords);
+              }
+              break;
+            }
             default:
-                console.warn(`Unknown action type: ${action.type}`);
-            }
-            if (action.id !== undefined) {
+              console.warn(`Unknown action type: ${action.type}`);
+          }
+          if (action.id !== undefined) {
             await clearPendingAction(action.id);
-            }
-            console.log(`Synced action: ${action.type}`, action);
+          }
         }
       }
     } catch (error) {
@@ -54,6 +65,15 @@ export function useSync() {
       syncPendingActions();
     }
   }, [isOnline, syncPendingActions]);
+
+  useEffect(() => {
+    const syncOnOnline = () => {
+      syncPendingActions();
+    };
+
+    window.addEventListener("online", syncOnOnline);
+    return () => window.removeEventListener("online", syncOnOnline);
+  }, [syncPendingActions]);
 
   return { syncing };
 }

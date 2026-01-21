@@ -62,6 +62,24 @@ const googleMapsApi = {
   },
 };
 
+const googleGeocodingApi = {
+  urlPattern: /^https:\/\/maps\.googleapis\.com\/maps\/api\/geocode\/json.*/i,
+  handler: "StaleWhileRevalidate",
+  options: {
+    cacheName: "google-geocode",
+    expiration: { maxEntries: 50, maxAgeSeconds: 7 * 24 * 60 * 60 },
+  },
+};
+
+const mapImages = {
+  urlPattern: /^\/maps\/.*\.(png|jpg|jpeg|svg|webp)$/i,
+  handler: "CacheFirst",
+  options: {
+    cacheName: "map-images",
+    expiration: { maxEntries: 20, maxAgeSeconds: 30 * 24 * 60 * 60 },
+  },
+};
+
 module.exports = [
   pageHandler,
   localImages,
@@ -69,5 +87,7 @@ module.exports = [
   nextImage,
   googleFonts,
   apiJSON,
-  googleMapsApi
+  googleGeocodingApi,
+  googleMapsApi,
+  mapImages,
 ];
