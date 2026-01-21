@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { updateOrder, deleteOrder, addPendingAction } from "@/lib/db";
+import { updateOrder, addPendingAction } from "@/lib/db";
 import type { Order } from "@/lib/types/order";
 import type { DeliveryLocation } from "@/lib/types/delivery";
 import { useNetworkStatus } from "@/hooks/useNetworkStatus";
@@ -13,9 +13,10 @@ interface OrderListProps {
   error: string | null;
   refetch: () => Promise<void>;
   onAccept?: (location: DeliveryLocation) => void;
+  onReject?: (orderId: string) => void;
 }
 
-export function OrderList({ deliveries, loading, error, refetch, onAccept }: OrderListProps) {
+export function OrderList({ deliveries, loading, error, refetch, onAccept, onReject }: OrderListProps) {
   const isOnline = useNetworkStatus();
 
   const handleAcceptOrder = async (orderId: string) => {
@@ -63,12 +64,17 @@ export function OrderList({ deliveries, loading, error, refetch, onAccept }: Ord
         if (!isOnline) {
           console.log("is OFFLINE. Adding pending action for order rejection");
           await addPendingAction({
-            type: "DELETE_ORDER",
-            payload: { orderId },
+            type: "UPDATE_ORDER",
+            payload: { orderId, status: "rejected" },
             timestamp: Date.now(),
           });
         }
-        await deleteOrder(orderId);
+
+        await updateOrder(orderId, { status: "rejected" });
+
+        if (onReject) {
+          onReject(orderId);
+        }
 
         await refetch();
       } catch (err) {

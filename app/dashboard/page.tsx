@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -92,6 +93,9 @@ export default function Dashboard() {
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Criar Novo Pedido</DialogTitle>
+                <DialogDescription>
+                  Preencha as informações abaixo para criar um novo pedido de entrega.
+                </DialogDescription>
               </DialogHeader>
               <CreateOrderForm onClose={() => setIsDialogOpen(false)} onOrderCreated={refetch} />
             </DialogContent>
@@ -106,6 +110,11 @@ export default function Dashboard() {
               error={error}
               refetch={refetch}
               onAccept={(delivery) => setSelectedDelivery(delivery)}
+              onReject={(orderId) => {
+                if (selectedDelivery?.id === orderId) {
+                  setSelectedDelivery(null);
+                }
+              }}
             />
           </Card>
           <Card className="p-4">

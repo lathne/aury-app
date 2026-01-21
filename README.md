@@ -1,33 +1,79 @@
 # Aury App
 
-Aury App is a modern, offline-first Progressive Web App (PWA) built with [Next.js](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), and [Redux Toolkit](https://redux-toolkit.js.org/). The project is designed for robust offline support and a seamless user experience across devices.
+O **Aury App** é um aplicativo web progressivo (PWA) moderno, com suporte offline, desenvolvido com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/) e [Redux Toolkit](https://redux-toolkit.js.org/). O projeto foi pensado para oferecer uma experiência offline first.
 
 ---
 
-## 🚀 Features
+## 📦 Como Instalar e Rodar o Projeto
 
-- **Next.js 15** with App Router
-- **TypeScript** for type safety
-- **Tailwind CSS** for utility-first styling
-- **Redux Toolkit** for state management
-- **Chart.js** for data visualization
-- **IndexedDB** via `idb` for persistent client-side storage
-- **shadcn/ui** and **Radix UI** for accessible, customizable components
-- **PWA**: Service Worker, manifest, and offline caching
-- **Theme support** with `next-themes`
+### Instalação
 
----
-
-## 🛠️ Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- [npm](https://www.npmjs.com/) (v9+ recommended)
-
-### Installation
-
-1. **Clone the repository:**
+1. **Clone o repositório:**
    ```sh
    git clone https://github.com/yourusername/aury-app.git
    cd aury-app
+
+
+### Build 
+
+1. Instale as dependências:
+   ```sh
+   npm install
+   ```
+
+2. Gere o build de produção:
+   ```sh
+   npx next build
+   ```
+   - O comando irá otimizar o projeto, gerar páginas estáticas e configurar o Service Worker para o PWA.
+   - Se aparecer o aviso sobre o Browserslist, execute:
+     ```sh
+     npx update-browserslist-db@latest
+     ```
+
+Para testar o PWA e o Service Worker, sempre use next build seguido de next start.
+No modo dev, o Service Worker não é registrado.
+
+### Rodando o Projeto
+
+Após o build, inicie o servidor de produção:
+```sh
+npx next start
+```
+- O app estará disponível em: [http://localhost:3000](http://localhost:3000)
+- Também pode ser acessado via rede local, conforme exibido no terminal.
+
+### Observações
+
+- O Service Worker será registrado automaticamente para garantir o funcionamento offline.
+- A página `/offline` será exibida caso o usuário perca a conexão.
+- Para desenvolvimento, utilize:
+  ```sh
+  npm run dev
+  ```
+  Isso inicia o servidor Next.js em modo de desenvolvimento, com recarregamento automático.
+
+
+---
+
+## 🚀 Funcionalidades
+
+- **Next.js 15** com App Router
+- **TypeScript** para segurança de tipos
+- **Tailwind CSS** para estilização rápida e responsiva
+- **Redux Toolkit** para gerenciamento de estado
+- **Chart.js** para visualização de dados
+- **IndexedDB** via `idb` para armazenamento persistente no cliente
+- **shadcn/ui** e **Radix UI** para componentes acessíveis e customizáveis
+- **PWA**: Service Worker, manifest e cache offline
+- **Suporte a temas** com `next-themes`
+
+---
+
+## 🛠️ Primeiros Passos
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (recomendado v18+)
+- [npm](https://www.npmjs.com/) (recomendado v9+)
+

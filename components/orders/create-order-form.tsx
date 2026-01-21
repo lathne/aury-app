@@ -50,7 +50,15 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
     try {
       setIsSubmitting(true);
       const newOrderId = Date.now().toString();
-      const coords = isOnline ? await geocodeAddress(data.address) : null;
+      
+      let coords = null;
+      if (isOnline) {
+        try {
+          coords = await geocodeAddress(data.address);
+        } catch (geoError) {
+          console.warn("Geocoding failed, order will be created without coordinates:", geoError);
+        }
+      }
 
       const newOrder: Order = {
         id: newOrderId,
@@ -86,11 +94,12 @@ export function CreateOrderForm({ onClose, onOrderCreated }: { onClose: () => vo
       }
      
       dispatch(addOrder(newOrder));
-      onClose();
      
       if (onOrderCreated) {
         await onOrderCreated();
       }
+      
+      onClose();
 
     } catch (error) {
       console.error("Failed to create order:", error);
