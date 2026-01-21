@@ -53,3 +53,7 @@ yarn-error.log*
 **/public/service-worker.js.map
 **/public/workbox-*.js.map
 node_modules
+
+# Bundle Analyzer Reports
+/.next/analyze/
+*.html

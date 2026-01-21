@@ -6,6 +6,9 @@ const config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // Otimizações de JIT (Just-in-Time)
+  mode: "jit",
+  
   theme: {
     extend: {
       backgroundImage: {
