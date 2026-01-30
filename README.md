@@ -33,7 +33,12 @@ O **Aury App** é um aplicativo web progressivo (PWA) moderno, com suporte offli
    ```sh
    git clone https://github.com/yourusername/aury-app.git
    cd aury-app
+   ```
 
+2. **Configure variáveis de ambiente (opcional):**
+   ```sh
+   cp .env.local.example .env.local
+   ```
 
 ### Build 
 
@@ -44,7 +49,7 @@ O **Aury App** é um aplicativo web progressivo (PWA) moderno, com suporte offli
 
 2. Gere o build:
    ```sh
-   npx next build
+   npm run build
    ```
    - O comando irá otimizar o projeto, gerar páginas estáticas e configurar o Service Worker para o PWA.
    - Se aparecer o aviso sobre o Browserslist, execute:
@@ -56,7 +61,7 @@ O **Aury App** é um aplicativo web progressivo (PWA) moderno, com suporte offli
 
 Após o build, inicie o servidor de produção:
 ```sh
-npx next start
+npm run start
 ```
 - O app estará disponível em: [http://localhost:3000](http://localhost:3000)
 - Também pode ser acessado via rede local, conforme exibido no terminal.
@@ -73,3 +78,29 @@ No modo dev, o Service Worker não é registrado.
   npm run dev
   ```
   Isso inicia o servidor Next.js em modo de desenvolvimento, com recarregamento automático.
+
+---
+
+## 🚀 Deploy
+
+### Vercel (recomendado)
+
+1. Faça login na Vercel e importe o repositório.
+2. Configure as variáveis de ambiente (se necessário) usando o conteúdo do `.env.local`.
+3. O build e deploy são automáticos com os scripts padrão:
+   - Build: `npm run build`
+   - Start: `npm run start`
+
+### Deploy manual (Node.js)
+
+1. Gere o build de produção:
+   ```sh
+   npm run build
+   ```
+2. Faça upload da pasta `.next`, `public`, `package.json` e `package-lock.json` para o servidor.
+3. No servidor, instale dependências e inicie:
+   ```sh
+   npm install --production
+   npm run start
+   ```
+4. Configure um reverse proxy (Nginx) apontando para a porta 3000.
