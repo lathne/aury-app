@@ -97,8 +97,8 @@ No modo dev, o Service Worker não é registrado.
    ```sh
    npm run build
    ```
-2. Faça upload da pasta `.next`, `public`, `package.json` e `package-lock.json` para o servidor.
-3. No servidor, instale dependências e inicie:
+2. Faça upload da pasta `.next`, `public`, `package.json`, `package-lock.json` e `next.config.js` para o servidor.
+3. No servidor, instale dependências e inicie (use um gerenciador como PM2 ou systemd para manter o processo ativo):
    ```sh
    npm install --production
    npm run start
