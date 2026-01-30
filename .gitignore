@@ -50,6 +50,7 @@ yarn-error.log*
 # PWA files
 **/public/workbox-*.js
 **/public/sw.js
+**/public/fallback-*.js
 **/public/service-worker.js.map
 **/public/workbox-*.js.map
 node_modules
