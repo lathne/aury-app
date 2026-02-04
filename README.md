@@ -2,9 +2,6 @@
 
 O **Aury App** é um aplicativo web progressivo (PWA) moderno, com suporte offline, desenvolvido com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/) e [Redux Toolkit](https://redux-toolkit.js.org/). O projeto foi pensado para oferecer uma experiência offline first.
 
-
-
-
 - **Next.js 15** com App Router
 - **TypeScript** para segurança de tipos
 - **Tailwind CSS** para estilização rápida e responsiva
